@@ -1,4 +1,4 @@
-#Running A TOR socks proxy in Kubernetes
+# Running A TOR socks proxy in Kubernetes
 
 ## Lets create a TOR socks proxy image
 Using this Dockerfile
@@ -27,7 +27,7 @@ We need to modify some listerenrs in the config file, so better to test if thing
 
 ## Simple test from within the container
 ```
-docker run -it   -p 9050:9050 xxradar/torproxy bash
+docker run -it   -p 9050:9050 xxradar/torproxy:0.1 bash
 
 ./start.sh
  * Starting filtering proxy server privoxy                                                                                                                                                           [ OK ]
@@ -43,9 +43,62 @@ curl -v --socks5-hostname localhost:9050 http://www.radarhack.com
 
 ## Simple test from outside the container
 ```
-docker run -d  -p 9050:9050 xxradar/torproxy
+docker run -d  -p 9050:9050 xxradar/torproxy:0.1
 ```
 and fron the CLI
 ```
 curl --socks5-hostname localhost:9050 http://www.radarhack.com/
 ...
+
+## Let's try it the K8S way ...
+```
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: torproxy
+  labels:
+    app: torproxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: torproxy
+  template:
+    metadata:
+      labels:
+        app: torproxy
+    spec:
+      containers:
+      - name: torproxy
+        imagePullPolicy: Always
+        image: xxradar/torproxy:0.1
+        ports:
+        - containerPort: 9050
+EOF
+
+
+## Create a service
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: torproxy-clusterip
+spec:
+  ports:
+  - port: 9050
+    protocol: TCP
+    targetPort: 9050
+  selector:
+    app: torproxy
+EOF
+```
+## To test this deployment / service 
+```
+kubectl run -it --rm --image xxradar/hackon debug2 --  curl -v --socks5-hostname torproxy-clusterip:9050 http://www.google.com
+```
+It should also work from any other then default namespace
+```
+kubectl run -it --rm --image xxradar/hackon debug2 --  curl -v --socks5-hostname torproxy-clusterip.default.svc.cluster.local:9050 http://www.google.com
+```
