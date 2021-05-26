@@ -35,13 +35,13 @@ docker run -it   -p 9050:9050 xxradar/torproxy:0.1 bash
                                                                                                                                                                                                      [ OK ]
 ^Croot@790ea68b7097:/#
 ```
-From inside container
+### From inside container
 ```
 curl --socks5-hostname localhost:9050 http://www.google.com/
 curl -v --socks5-hostname localhost:9050 http://www.radarhack.com
-````
+```
 
-## Simple test from outside the container
+### Simple test from outside the container
 ```
 docker run -d  -p 9050:9050 xxradar/torproxy:0.1
 ```
@@ -49,8 +49,9 @@ and fron the CLI
 ```
 curl --socks5-hostname localhost:9050 http://www.radarhack.com/
 ...
-
+```
 ## Let's try it the K8S way ...
+### Create a deployment
 ```
 kubectl apply -f - <<EOF
 apiVersion: apps/v1
@@ -76,9 +77,9 @@ spec:
         ports:
         - containerPort: 9050
 EOF
+```
 
-
-## Create a service
+### Create a service
 ```
 kubectl apply -f - <<EOF
 apiVersion: v1
