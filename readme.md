@@ -1,4 +1,4 @@
-# Running A TOR socks proxy in Kubernetes
+# Running A TOR socks proxy in Kubernetes.
 
 ## Lets create a TOR socks proxy image
 Using this Dockerfile
