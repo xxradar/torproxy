@@ -13,15 +13,19 @@ CMD [ "/start.sh"]
 ```
 and some (probably enhanceble way) script to run the proxies in the container/pod
 ```
+$ cat start.sh
+
 #!/bin/bash
 sed -i 's/TorAddress 127.0.0.1/TorAddress 0.0.0.0/g' /etc/tor/torsocks.conf
 sed -i 's/#SOCKSPort 9050/SOCKSPort 0.0.0.0:9050/g' /etc/tor/torrc
 service privoxy start
 service tor start
-/bin/bash -c "trap : TERM INT; sleep infinity & wait"
-docker build --no-cache -t xxradar/torproxy .    
+/bin/bash -c "trap : TERM INT; sleep infinity & wait"   
 ```
 Feel free to build your on or use a pre-build image `xxradar/torproxy:0.1'
+```
+docker build --no-cache -t xxradar/torproxy . 
+````
 
 We need to modify some listerenrs in the config file, so better to test if things are working fine.
 
