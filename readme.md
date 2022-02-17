@@ -22,7 +22,7 @@ service privoxy start
 service tor start
 /bin/bash -c "trap : TERM INT; sleep infinity & wait"   
 ```
-Feel free to build your on or use a pre-build image `xxradar/torproxy:0.1'
+Feel free to build your on or use a pre-build image `xxradar/torproxy:0.1`
 ```
 docker build --no-cache -t xxradar/torproxy . 
 ````
