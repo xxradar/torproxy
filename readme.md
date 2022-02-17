@@ -11,7 +11,7 @@ COPY config /etc/privoxy/config
 COPY start.sh .
 CMD [ "/start.sh"]
 ```
-and some (probably enhanceble way) script to run the proxies in the container/pod
+and some (probably enhanceable way) script to run the proxies in the container/pod
 ```
 $ cat start.sh
 
