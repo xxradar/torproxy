@@ -101,9 +101,9 @@ EOF
 ```
 ## To test this deployment / service 
 ```
-kubectl run -it --rm --image xxradar/hackon debug2 --  curl -v --socks5-hostname torproxy-clusterip:9050 http://www.google.com
+kubectl run -it --rm --image xxradar/hackon debug2 --  curl -v --socks5-hostname torproxy-clusterip:9050 https://www.google.com
 ```
 It should also work from any other then default namespace
 ```
-kubectl run -it --rm --image xxradar/hackon debug2 --  curl -v --socks5-hostname torproxy-clusterip.default.svc.cluster.local:9050 http://www.google.com
+kubectl run -it --rm --image xxradar/hackon debug2 --  curl -v --socks5-hostname torproxy-clusterip.default.svc.cluster.local:9050 https://www.google.com
 ```
